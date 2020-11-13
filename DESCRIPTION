@@ -1,0 +1,18 @@
+Package: Multilogreg
+Type: Package
+Title: Semi-parametric models for multivariate point pattern data
+Version: 0.1.0
+Author: Kristian B. Hessellund, Ganggang Xu, Yountao Guan & Rasmus Waagepetersen
+Maintainer: Kristian B. Hessellund <kristianh@math.aau.dk>
+Description: This package consists of semi-parametric methods to analyze first and second order properties of multivariate point pattern data with complex intensity functions. 
+License: CC BY 4.0
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.1
+Depends: 
+    R (>= 3.5.0),
+    RandomFields,
+    spatstat
+
+    
+
