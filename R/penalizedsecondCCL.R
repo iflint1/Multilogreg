@@ -70,58 +70,58 @@
 #' phb = c(lw/5,lw/1000)
 #'
 #' # Parameter estimation
-#' #par.est = PenalizedSecondOrderCCL(X=markedprocess,covariate = Z_process,Beta = Betahat$betahat,
-#' #Rmax = Rmax,xibound=xib,sigmabound = sib,phibound=phb, lat = latent)
+#' par.est = PenalizedSecondOrderCCL(X=markedprocess,covariate = Z_process,Beta = Betahat$betahat,
+#' Rmax = Rmax,xibound=xib,sigmabound = sib,phibound=phb, lat = latent)
 #'
-#' ## Parameter estimates
-#' #B = rbind(diag(nspecies-1),rep(-1,nspecies-1))
-#' #alp.est = B%*%par.est[[1]]$psi[,,1]
-#' #xi.est  = par.est[[1]]$xi
-#' #sig.est = par.est[[1]]$sigma
-#' #phi.est = par.est[[1]]$phi
+#' # Parameter estimates
+#' B = rbind(diag(nspecies-1),rep(-1,nspecies-1))
+#' alp.est = B%*%par.est[[1]]$psi[,,1]
+#' xi.est  = par.est[[1]]$xi
+#' sig.est = par.est[[1]]$sigma
+#' phi.est = par.est[[1]]$phi
 #'
-#' ## Pair correlation functions (PCF)
-#' #pcf.est=matrix(NA,nrow=nspecies,ncol=rl)
-#' #for(i in 1:nspecies){
-#' #   tmp=0
-#' #   for(k in 1:latent){tmp = tmp + alp.est[i,k]*alp.est[i,k]*exp(-r/xi.est[k])}
-#' #   pcf.est[i,]=exp(tmp+sig.est[i]^2*exp(-r/phi.est[i]))
-#' # }
+#' # Pair correlation functions (PCF)
+#' pcf.est=matrix(NA,nrow=nspecies,ncol=rl)
+#' for(i in 1:nspecies){
+#'   tmp=0
+#'   for(k in 1:latent){tmp = tmp + alp.est[i,k]*alp.est[i,k]*exp(-r/xi.est[k])}
+#'   pcf.est[i,]=exp(tmp+sig.est[i]^2*exp(-r/phi.est[i]))
+#' }
 #'
-#' ## Plot of PCFs
-#' #lims=c(min(pcf.est,0.9),max(pcf.est,1.1))
-#' #plot(r,rep(1,rl),type="l",ylim=lims,main="PCFs",ylab="", lwd=2)
-#' #for(j in 1:nspecies){lines(r,pcf.est[j,],col=j+1,lwd=2)}
-#' #txt.legend=c(as.expression(bquote(g[11])),as.expression(bquote(g[22])),
-#' #as.expression(bquote(g[33])),as.expression(bquote(g[44])),
-#' #as.expression(bquote(g[55])),as.expression(bquote(g[66])))
-#' #legend("topright",legend =  txt.legend,lty=1,col=c(2,3,4,5,6,7), cex=1,lwd=2)
+#' # Plot of PCFs
+#' lims=c(min(pcf.est,0.9),max(pcf.est,1.1))
+#' plot(r,rep(1,rl),type="l",ylim=lims,main="PCFs",ylab="", lwd=2)
+#' for(j in 1:nspecies){lines(r,pcf.est[j,],col=j+1,lwd=2)}
+#' txt.legend=c(as.expression(bquote(g[11])),as.expression(bquote(g[22])),
+#' as.expression(bquote(g[33])),as.expression(bquote(g[44])),
+#' as.expression(bquote(g[55])),as.expression(bquote(g[66])))
+#' legend("topright",legend =  txt.legend,lty=1,col=c(2,3,4,5,6,7), cex=1,lwd=2)
 #'
 #' # cross-PCFs
 #' #cross.pcf.est=matrix(NA,nrow=nspecies*(nspecies-1)/2,ncol=rl)
 #' #l=0
-#' #for(i in 1:nspecies){
-#'  # for(j in i:nspecies){
-#'  #   if(i==j){next}
-#'  #  l=l+1
-#'  #   tmp=0
-#'  #   for(k in 1:latent){tmp = tmp + alp.est[i,k]*alp.est[j,k]*exp(-r/xi.est[k])}
-#'  #   cross.pcf.est[l,]=exp(tmp)
-#'  # }
-#' #}
+#' for(i in 1:nspecies){
+#'   for(j in i:nspecies){
+#'     if(i==j){next}
+#'     l=l+1
+#'     tmp=0
+#'     for(k in 1:latent){tmp = tmp + alp.est[i,k]*alp.est[j,k]*exp(-r/xi.est[k])}
+#'     cross.pcf.est[l,]=exp(tmp)
+#'   }
+#' }
 #'
 #' # Plot of cross-PCFs
-#' #ylims=c(min(0.9,cross.pcf.est),max(1.1,cross.pcf.est))
-#' #ltys=c(rep(1,8),rep(2,8))
-#' #plot(r,rep(1,rl),type="l",main="cross-PCFs",ylab="",ylim=ylims)
-#' #for(i in 1:(nspecies*(nspecies-1)/2)){lines(r,cross.pcf.est[i,],col=i+1,lty=ltys[i],lwd=2)}
-#' #txt.legend=c(as.expression(bquote(g[12])),as.expression(bquote(g[13])),
-#' #as.expression(bquote(g[14])),as.expression(bquote(g[15])),as.expression(bquote(g[16])),
-#' #as.expression(bquote(g[23])),as.expression(bquote(g[24])),as.expression(bquote(g[25])),
-#' #as.expression(bquote(g[26])),as.expression(bquote(g[34])),as.expression(bquote(g[35])),
-#' #as.expression(bquote(g[36])),as.expression(bquote(g[45])),as.expression(bquote(g[46])),
-#' #as.expression(bquote(g[56])))
-#' #legend("topright",legend =  txt.legend,lty=c(rep(1,8),rep(2,8)),col=2:17,cex=0.7,bg="white",lwd=2)
+#' ylims=c(min(0.9,cross.pcf.est),max(1.1,cross.pcf.est))
+#' ltys=c(rep(1,8),rep(2,8))
+#' plot(r,rep(1,rl),type="l",main="cross-PCFs",ylab="",ylim=ylims)
+#' for(i in 1:(nspecies*(nspecies-1)/2)){lines(r,cross.pcf.est[i,],col=i+1,lty=ltys[i],lwd=2)}
+#' txt.legend=c(as.expression(bquote(g[12])),as.expression(bquote(g[13])),
+#' as.expression(bquote(g[14])),as.expression(bquote(g[15])),as.expression(bquote(g[16])),
+#' as.expression(bquote(g[23])),as.expression(bquote(g[24])),as.expression(bquote(g[25])),
+#' as.expression(bquote(g[26])),as.expression(bquote(g[34])),as.expression(bquote(g[35])),
+#' as.expression(bquote(g[36])),as.expression(bquote(g[45])),as.expression(bquote(g[46])),
+#' as.expression(bquote(g[56])))
+#' legend("topright",legend =  txt.legend,lty=c(rep(1,8),rep(2,8)),col=2:17,cex=0.7,bg="white",lwd=2)
 #' @export
 #'
 
